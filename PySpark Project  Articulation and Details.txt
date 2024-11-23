@@ -1,0 +1,225 @@
+Project Title (Choose any one)
+Start with the name of the project uniquely
+ Customer360 & Retail Hub - Insight Data Platform & Analytics
+ Customer360 Data Lakehouse
+ Retail Fusion Data Hub
+ Omni Retail Data Lake
+ Insight Stream Retail Analytics
+ Commerce Pulse Data Lakehouse
+ Retail Vision Unified Platform
+ Data Synergy Retail Analytics
+ Retail Navigator Data Platform
+ 
+ 
+Project Synopsis
+Abstract:
+This Data Lake and Lakehouse building project establishes an integrated central repository for retailers, enabling them to
+combine and analyze a comprehensive range of online and offline customer data. This includes customer information,
+viewership patterns, navigation behaviors, product details, purchases, orders, employee engagement, productivity, and
+feedback. By leveraging this data, retailers can gain insights into individual consumer behaviors and preferences, and develop
+targeted recommendations and loyalty programs including profit and promo ratios, proactive meeting of demand and supply
+requirements, providing better customer experience, know your customer etc.,
+Benefits:
+Our Enterprise Data Lake supports the development of strategies, key performance indicators (KPIs), and implementation
+roadmaps, guiding our stakeholders across the Org through from strategic definition to large-scale global implementations and
+ongoing support using big data ecosystems, where we are enabling data products to data science, AI, and machine learning
+(AI/ML) projects, help driving innovation and delivering actionable insights.
+Growth:
+This project is developed to address the scalable need of the business that evolves with more applications developed, drawing
+value from diverse data sources such as sensors, machines, server logs, and clickstreams and This evolution supports the
+growing needs of AI, machine learning, and generative AI projects, enabling deeper insights and more sophisticated datadriven solutions
+
+Roles & Responsibilities
+As A lead data engineer, I am responsible for designing the data architecture and implementing the end
+to end ETL processes in the onprem Cloudera cluster, involved in integrating data from various sources,
+including customer interactions data, product , purchase, order data, payments data and employee,
+office data, into a unified data lake and lake house by …
+ Defininig Data Architecture and Modelling, 
+ Developing E2E ETL Pipelines
+ Data Sourcing & Integration
+ Maintaining Data Quality and Governance
+ Data Storage Management
+ Performance Optimization
+ Reporting, ML Model and Analytics Support
+ Continuous Development & Productionizing
+ System Monitoring and Maintenance
+ Cross Collaboration and Communication
+
+
+Technology Stack & Strategies Used
+ HDFS/LFS/Cloud FS as a source for injecting the data from Inbound file systems. 
+ Spark JDBC for injecting the data from different databases/schemas using most of the options. 
+ Spark DeltaLake library provided by Databricks to handle CDC, SCD Type1 using merge option.
+ Spark DSL, SQL and Spark Hive for in memory processing. 
+ Cloud storage connector to store the data into GCS/S3 buckets
+ Visual Analytics using the Looker visualization.
+ CDC - SCD Type2 concepts applied to handle the historical data using versioning concept.
+ Parsing of complex JSON objects and load into the Hive table using Spark DSL.
+ Apply UDFs with multiple columns for deriving KPIs and Metrics.
+ Apply data Munging, Wrangling, Standardization, Customization, Enrichment etc.,
+ Performance Improvements: Caching, Partitioning, Convert complex data type, reorder of columns 
+extracted from the databases, applied Push down optimization at the source DB level such as date filter, 
+Federation Feature (rather than pulling the data and writing to filesystem and join reading it back, doing it 
+inmemory itself), parallel data ingestion using partition concept from the DB, joins etc. 
+ Used Hive HQL required and where tempviews required and when DSL required to create and load
+ Under retail curated and Discovery databases create and load external tables which is partitioned
+ Spark SQL load the aggregated data back to RDBMS.
+ Opportunities for storing the end data into NOSQL DB
+ Opportunities for deriving more analytical use cases queries by the end users and reporting teams.
+
+
+Terminologies Used
+ Pushdown optimization
+ Change data capture
+ Slowly changing dimension type 1 and 2
+ Optimization & Multiline JSON
+ Data Munging, Wrangling
+ Spark JDBC boundary partitioning
+ Parameters/Arguments/Property/Configuration driven approach
+ Generic framework or Reusable Functions, User Defined Functions
+ Data pipeline, Data discovery, Data Curation
+ Analytical and Windowing Functions (EDA)
+
+KPIs & Metrics Derived
+ Profit & Promo Indicator
+ Demand & Supply ratio metrics
+ Viewship pattern analysis
+ Customer Intent Identification
+ Customer Frustration Scoring 
+ Most recurrent reason for the customers to contact the business.
+ Customer Aggregation metrics
+ Customer Experience
+ Top N analysis of orders and customer interactions
+ Top N analysis of department wise employees performance metrics
+ Performance Metrics
+ Severity Indicator
+ Rewards programs
+ 
+ 
+Project Articulation:
+
+1. Datas Received (Source Data):
+ Employee
+ Offices
+ Orders
+ OrderDetails
+ Customer
+ Payments
+ Customer Navigation
+ Orders Rate 
+ 
+2. Execution:
+	We are doing Employee Data load in a SCD2 concept. By Applying SCD2 we are maintaning prior and current state 
+of employees in terms of the promotions and salary like all those informations.I'm storing all these records in
+Hive dimension layer.
+	Offices informations of where the employees are working informationswe are collecting because I'm conducting 
+employee rewards program in my project. Like state wise which employees have made more sales according to that
+I'm gonna give them a reward.
+	(Change Data Capture & Incremental Data ingestion)In products data I'm using SCD1 concept by using Delta Lake Library where spark does not support ACID transactions
+on the data frame or hive table. So we are converting the data into delta lake format and doing updates and insertion
+of data by invoking some delta libraries.I'm grabbing those delta libraries from Maven environment and downloaded
+once for all in my onprem cluster (Project Environment).I'm storing this records also in Hive dimension layer.
+	Now I do updates where I'm getting the informations from the source and also I'm calculating promo indicator,
+profit indicator,profit percentage,demand indicator by using udf and I'm merging these infos with my target.
+	Then we have orders and orderdetails data. Since we are getting huge volume of orders and orderdetails of given
+transactions happening in our source system we ensure to pull the data from database by applying PUSHDOWN OPTIMIZATION
+by doing a join in Database (source) side itself by bringing the data. We are not getting two data frames and 
+then joing the data. We are joining and then pulling the data (PDO in Source Level).Then I do Data Wrangling
+by joining the required data from the products and orders data. Then I apply some additional optimization techniques
+like repartitioning,caching and shufflepartitioning.I'm stroing it in Hive curated layer.
+	Then we are joinig the orderdetails and products info and storing it in the hive curated layer.
+	Then we are having another pipeline that is customer and payments data. It also has huge volume of data so we are 
+pulling those datas by applying PDO and we are pulling data with multiple parallel threads by using some lowebound,
+upperbound,partition column and number of partitions.Then I apply some additional optimization techniques like 
+repartitioning,caching and shufflepartitioning here also and storing it in Hive curated layer.
+	We ensure to store all the employees,offices,products information in Hive dimension layer. In the 
+curated layer we are storing orderproducts,customerpayments data. 
+	Now we are taking customer navigation data which is in nested json format and here applying the pos explode
+concept and all we wanted to understand how the customers are navigating in our webpage for that we are doings
+some customer viewship pattern analysis and intent analysis to find why the customer reached our business and
+finding whether they succeeded by adding the product in cart and purchasing it or whether they dropped out 
+becuase of we could not able to meet their intent.
+	Then I'm going to consider the comments given by the customer in the same source data and calculating the
+satisfaction index and frustration score of the customer both we are calculating and storing in the curated layer
+finding the first page and last page visited of the customer and putting these information in hadoop or Cloud Egress
+system. 
+	Then having some static data of order rating given by customer and joining these data with the comments given by 
+the customer in navigation data to identify the score that is kept in the order rate. Based on that we are creating
+a cumulative value of a customer how much rating have given by calculating their positive and negative comments
+and assigning a specific score for the comments and I create a data with customer frustration level whether 
+customer feels highly frustrated or low frustrated or overwhelming. I'm giving this data to Egress system and conumer by
+directly uploading in the database table by this consumer can make some legacy report. In another side we are 
+calculating data for Employee rewards program as well.
+	
+	
+Data Management Techniques:
+	CDC & Incremental Data Ingestion
+	Delta Lake data processing & Load
+	SCD1 & 2 processing & Load
+
+Architecture Overview
+We have implemented a Open Data lake house (Common Model) Architecture in this project.
+Zones Involved
+Raw Zone:
+Raw zone Is the initial storage layer in a Data Lake where unprocessed, unstructured, or minimally processed data is ingested and stored. 
+Mostly file systems such as HDFS or Cloud storage or Linux landing pad will be used or Hive Lakehouse can be used.
+Curated Zone:
+A curated Data Lake layer is a refined, organized, and structured subset of the raw data ingested into the Data Lake such as Data Cleansing, 
+Transformation, Validation & metadata management.
+Mostly lakehouse like Hive or NoSQLs can be used.
+Discovery or Consumption Zone or Serving Zone:
+The consumption zone in a Data Lake is the layer where data is made available for end-users and applications to analyze, visualize, and 
+derive insights. 
+Tools like Web GUIs like Hue, Notebooks, Reporting/Visualization tools can be used.
+
+
+Challenges Faced
+ Encountered data quality issues such as format issues, null issues,
+ Data Ingestion challenges
+ Partial data load & Duplicate data challenges
+ Performance Challenges
+ Unpredicted data workload challenges
+ Storage Optimization challenges
+ Centralized metadata management challenges
+
+
+
+SUMMARIZED ARTICULATION:
+
+Technology Stack & Techniques:
+Data Ingestion: Use HDFS/LFS/Cloud FS for file-based data, Spark JDBC for database imports, and Delta Lake for CDC and SCD Type 1 handling.
+
+In-Memory Processing: Utilize Spark DSL, SQL, and Spark Hive for efficient in-memory data transformations.
+
+Data Storage: Store results in GCS/S3 and use Hive for creating partitioned external tables.
+
+Optimizations: Implement caching, partitioning, and pushdown optimization at the database level. Parallel ingestion with JDBC boundary partitioning.
+
+Data Transformation: Use UDFs for KPI and metric calculations, apply data munging and wrangling techniques for standardization, and handle complex JSON parsing with Spark DSL.
+
+Analytical Tools: Perform visual analytics with Looker, derive analytical insights, and calculate customer and operational metrics.
+
+Key Terminologies:
+Pushdown Optimization: Perform joins and filters at the database level to reduce data movement.
+
+Change Data Capture (CDC): Apply SCD Type 1 for non-historical data changes and SCD Type 2 for tracking historical changes.
+
+Data Pipeline and Discovery: Curate data from various sources, create external tables in Hive, and provide data for end-user reporting and analytics.
+
+KPIs & Metrics:
+Track critical business metrics such as Profit & Promo Indicators, Customer Frustration Scores, Customer Intent, Demand & Supply Ratios, and Top N Analysis on orders and performance.
+
+Project Articulation:
+Employee Data: Load employee data with SCD Type 2 to track historical changes and promotions. Store data in Hive.
+
+Product Data: Use Delta Lake for SCD Type 1 and CDC to handle updates and insertions. Optimize performance using partitioning and caching.
+
+Orders and OrderDetails: Apply pushdown optimization for database joins to reduce data transfer. Store data in Hive curated layer and optimize with repartitioning and shuffle partitioning.
+
+Customer and Payments: Use partitioning and parallel data ingestion techniques for high-volume data. Store results in Hive.
+
+Customer Navigation Analysis: Parse nested JSON data to understand customer behavior and calculate metrics such as viewership patterns and customer intent.
+
+Customer Sentiment Analysis: Analyze customer comments to calculate satisfaction and frustration scores. Store data in a Cloud Egress system for further analysis.
+
+Employee Rewards Program: Integrate employee data with performance metrics to recognize high-performing employees by region and sales.

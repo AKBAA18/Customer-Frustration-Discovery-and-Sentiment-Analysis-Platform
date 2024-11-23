@@ -1,0 +1,85 @@
+header=["id" , "purchase_date" , "txn_id" , "price" , "prod_cat" , "prod_detail"  , "state" , "city"  , "payment_mode"] 
+
+
+StructType(StructField("id",StringType(),True),StructField("purchase_date",StringType(),True),StructField("txn_id",StringType(),True),StructField("price",StringType(),True),StructField("prod_cat",StringType(),True),StructField("prod_detail",StringType(),True),StructField("state",StringType(),True),StructField("city",StringType(),True),StructField("payment_mode",StringType(),True), StructField("wrong_data",StringType(),True))
+
+
+hadoop fs -mkdir /user/hduser/empdata/
+
+hadoop fs -chmod 777 /user/hduser/empdata/
+
+
+hive --service metastore
+
+pip install delta-spark==1.1.0
+
+spark-submit --packages io.delta:delta-core_2.12:1.1.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" --py-files /home/hduser/PysparkRetailDatalakeOnpremProject_2_2024/common_functions.zip DriverModule.py /home/hduser/PysparkRetailDatalakeOnpremProject_2_2024/connection.prop /home/hduser/install/mysql-connector-java.jar /home/hduser/PysparkRetailDatalakeOnpremProject_2_2024/app.properties
+
+
+
+hadoop fs -rmr -r /user/hduser/empdata/
+hadoop fs -rmr -r /user/hduser/custnavigation/
+hadoop fs -rmr -r /user/hduser/dimorders/
+hadoop fs -rmr -r /user/hduser/custmartfrustration/
+
+
+spark-submit \
+  --packages io.delta:delta-core_2.12:1.1.0 \
+  --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+  --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog" \
+  --py-files /home/hduser/PysparkRetailDatalakeOnpremProject_2_2024/common_functions.zip \
+  --jars /home/hduser/install/mysql-connector-java.jar \
+  /home/hduser/PysparkRetailDatalakeOnpremProject_2_2024/DriverModule.py \
+  /home/hduser/PysparkRetailDatalakeOnpremProject_2_2024/connection.prop \
+  /home/hduser/PysparkRetailDatalakeOnpremProject_2_2024/app.properties
+
+
+       .sql("""CREATE external TABLE retail_dim.hive_employees('employeenumber' int,'lastname' string,'firstname' string,'extension' string,'email' string'officecode' string, 'reportsto' int,'jobtitle' string, 'upddt' date, 'leaveflag' string,'ver' int)row format delimited fields terminated by ',' location '/user/hduser/empdata/'""")
+
+
+
+spark.sql("""
+    CREATE EXTERNAL TABLE retail_dim.hive_employees (
+        employeenumber INT,
+        lastname STRING,
+        firstname STRING,
+        extension STRING,
+        email STRING,
+        officecode STRING,
+        reportsto INT,
+        jobtitle STRING,
+        upddt DATE,
+        leaveflag STRING,
+        ver INT
+    )
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ','
+    LOCATION '/user/hduser/empdata_1/'
+""")
+
+
+
+
+1. First check the functions 
+2. Do config file and read data from that config file 
+
+
+
+
+
+
+
+Note : 
+SparkConf imported from  :
+	from pyspark import SparkConf
+ConfigParser imported from :
+	from configparser import ConfigParser
+
+
+spark.master=local[2]:
+This indicates that Spark will run locally on your machine using 2 CPU cores (or threads). It’s a mode primarily used for development, testing, or small-scale processing on your local machine.
+	local: Runs Spark on a single machine.
+	[2]: Specifies the number of cores or threads Spark should use (in this case, 2).
+
+
+
