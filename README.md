@@ -1,2 +1,3 @@
 # Customer-Frustration-Discovery-and-Sentiment-Analysis-Platform
-The purpose of this work was to deploy a single platform for studying the customers frustration level  
+
+The purpose of this work was to deploy a single platform for studying the processes of customers’ contacts with the company and establishing the degree of their dissatisfaction with regard to received feedback and orders. This enables sentiment and frustration scores to be derived from large-scale customer navigation combined with information related to orders. Such a system permits the performance of routines for data cleansing, preprocessing and transformation with a view of strengthening the quality of data and thus enhancing traditional inferences that are embedded in algorithms of customer prediction models.
